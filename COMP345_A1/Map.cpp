@@ -50,7 +50,7 @@ const City& Map::city(const std::string& name) const
 	return *it->get();
 }
 
-const std::vector<CityPtr>& Map::cities() const
+const std::vector<Map::CityPtr>& Map::cities() const
 {
 	return _cities;
 }
@@ -70,7 +70,7 @@ bool Map::connected(const std::string& source, const std::string& target) const
 	return it != _connections.end() && it->second;
 }
 
-const std::vector<PlayerPtr>& Map::players() const
+const std::vector<Map::PlayerPtr>& Map::players() const
 {
 	return _players;
 }

@@ -62,6 +62,7 @@ void main()
 
 	std::cout << player.name() << ", your pawn is in " << player.pawn().position().name() << "." << "\n";
 
+	// Save game
 	std::cout << "Where do you wish to save this game file? ";
 	std::string saveFileName;
 	std::getline(std::cin >> std::ws, saveFileName);

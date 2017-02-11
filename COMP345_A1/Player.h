@@ -12,6 +12,7 @@ class Map;
 
 class Player
 {
+
 public:
 	Player(const std::string& name, const Map& map);
 	std::string name() const;
