@@ -1,6 +1,7 @@
 #include <fstream>
 #include <tuple>
 #include <string>
+#include <sstream>
 #include <stdexcept>
 
 #include "MapSerialization.h"
@@ -16,7 +17,7 @@ Map readMapFromFile(const std::string& fileName)
 	std::map<std::string, std::string> playerLocations;
 	std::vector<std::string> cityNames;
 	std::map<std::string, std::vector<std::string>> connections;
-	std::ifstream stream(fileName);
+	std::ifstream stream{ fileName };
 	if (!stream)
 	{
 		throw std::runtime_error{ "File not found!" };

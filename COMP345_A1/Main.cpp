@@ -9,6 +9,10 @@
 #include "Map.h"
 #include "MapSerialization.h"
 
+constexpr size_t numPlayers = 2;
+
+void solicitPlayerName(Map& map, const size_t number);
+
 void main()
 {
 	// Load map
@@ -27,14 +31,9 @@ void main()
 	Map map = readMapFromFile(fileName);
 	std::cout << "Map \"" << fileName << "\" loaded!\n\n";
 
-	// Construct player
-	std::cout << "Enter your name: ";
-	std::string playerName;
-	std::getline(std::cin >> std::ws, playerName);
-	std::cout << "Welcome, " << playerName << "\n";
-
-	map.addPlayer(playerName);
-	const auto& player = *map.players().back();
+	// Construct players
+	for (auto i = 1; i <= numPlayers; ++i)
+		solicitPlayerName(map, i);
 
 	// Place pawn
 	std::cout << "Cities of " << map.name() << ": \n";
@@ -42,14 +41,13 @@ void main()
 		std::cout << "    " << city->name() << "\n";
 	
 	std::cout << "Where would you like to place your pawn? ";
+	std::string cityName;
 	do
 	{
 		try
 		{
-			std::string cityName;
+			
 			std::cin >> cityName;
-			const auto& city = map.city(cityName);
-			player.pawn().position(city);
 		}
 		catch (const std::out_of_range& e)
 		{
@@ -60,11 +58,28 @@ void main()
 	}
 	while (true);
 
-	std::cout << player.name() << ", your pawn is in " << player.pawn().position().name() << "." << "\n";
+	const auto& city = map.city(cityName);
+	Player* p;
+	for (const auto& player : map.players())
+	{
+		player->pawn().position(city);
+		p = player.get();
+	}
+
+	std::cout << "Your pawns are in " << p->pawn().position().name() << "." << "\n";
 
 	// Save game
 	std::cout << "Where do you wish to save this game file? ";
 	std::string saveFileName;
 	std::getline(std::cin >> std::ws, saveFileName);
 	writeMapToFile(map, saveFileName);
+}
+
+void solicitPlayerName(Map& map, const size_t number)
+{
+	std::cout << "Enter the name of player " << number << ": ";
+	std::string playerName;
+	std::getline(std::cin >> std::ws, playerName);
+	std::cout << "Welcome, " << playerName << "\n";
+	map.addPlayer(playerName);
 }

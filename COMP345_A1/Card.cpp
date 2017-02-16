@@ -7,16 +7,19 @@ Card::Card(const std::string& name, const std::string& description)
 	// empty
 }
 
-Card::Card(const Card& original)
-	: _name{ original._name }
-	, _description{ original._description }
+Card::~Card()
 {
-	// empty
+	// Empty
 }
 
-const std::string& Card::name() const
+std::string Card::name() const
 {
 	return _name;
+}
+
+std::string Card::description() const
+{
+	return _description;
 }
 
 Card& Card::name(const std::string& newName)

@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "Card.h"
+#include "ReferenceCard.h"
 #include "Pawn.h"
 
 class Pawn;
@@ -18,9 +18,11 @@ public:
 	std::string name() const;
 	const Map& map() const;
 	Pawn& pawn() const;
+	Card& referenceCard() const;
 
 private:
 	std::string _name;
 	const Map& _map;
 	std::unique_ptr<Pawn> _pawn;
+	std::unique_ptr<ReferenceCard> _referenceCard;
 };

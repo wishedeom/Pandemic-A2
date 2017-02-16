@@ -149,6 +149,7 @@
     <ClCompile Include="MapSerialization.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ReferenceCard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Card.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="MapSerialization.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="ReferenceCard.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="earth.map" />
