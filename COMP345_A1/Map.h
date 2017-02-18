@@ -25,7 +25,7 @@ public:
 
 	// Mutators
 	Map& name(const std::string& name);											// Set map name
-	Map& addCity(const std::string& name);										// Add city with given name
+	Map& addCity(const std::string& name, const std::string& colour);			// Add city with given name and colour
 	Map& addConnection(const std::string& source, const std::string& target);	// Connect two cities with given names
 	Map& addPlayer(const std::string& name);									// Add a player with a given name
 

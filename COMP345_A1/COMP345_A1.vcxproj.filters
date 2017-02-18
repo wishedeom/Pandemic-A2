@@ -36,7 +36,7 @@
     <ClCompile Include="MapSerialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ReferenceCard.cpp">
+    <ClCompile Include="CardCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClInclude Include="MapSerialization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ReferenceCard.h">
+    <ClInclude Include="CardCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

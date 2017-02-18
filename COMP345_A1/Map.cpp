@@ -17,9 +17,9 @@ Map& Map::name(const std::string & name)
 	return *this;
 }
 
-Map& Map::addCity(const std::string& name)
+Map& Map::addCity(const std::string& name, const std::string& colour)
 {
-	_cities.push_back(std::make_unique<City>(name));
+	_cities.push_back(std::make_unique<City>(name, colour));
 	return *this;
 }
 

@@ -16,6 +16,7 @@ Map readMapFromFile(const std::string& fileName)
 	std::vector<std::string> playerNames;
 	std::map<std::string, std::string> playerLocations;
 	std::vector<std::string> cityNames;
+	std::map<std::string, std::string> colours;
 	std::map<std::string, std::vector<std::string>> connections;
 	std::ifstream stream{ fileName };
 	if (!stream)
@@ -45,8 +46,12 @@ Map readMapFromFile(const std::string& fileName)
 		}
 		else
 		{
-			connections[line];
-			cityNames.push_back(line);
+			const auto idx = line.find_last_of(' ');
+			const auto cityName = line.substr(0, idx);
+			const auto colour = line.substr(idx + 1);
+			cityNames.push_back(cityName);
+			connections[cityName];
+			colours[cityName] = colour;
 		}
 	}
 	stream.close();
@@ -57,7 +62,7 @@ Map readMapFromFile(const std::string& fileName)
 	// Add cities
 	for (const auto& pair : connections)
 	{
-		map.addCity(pair.first);
+		map.addCity(pair.first, colours[pair.first]);
 	}
 
 	// Add connections
@@ -88,14 +93,14 @@ void writeMapToFile(const Map& map, const std::string& fileName)
 		players[player->name()] = player->pawn().position().name();
 	}
 
-	std::map<std::string, std::vector<std::string>> cities;
+	std::map<std::string, std::pair<std::string, std::vector<std::string>>> cities;
 	for (const auto& source : map.cities())
 	{
 		const auto& connections = map.connections(source->name());
-		cities[source->name()];
+		cities[source->name()].first = source->colour();
 		for (const auto& target : connections)
 		{
-			cities[source->name()].push_back(target->name());
+			cities[source->name()].second.push_back(target->name());
 		}
 	}
 	
@@ -108,11 +113,11 @@ void writeMapToFile(const Map& map, const std::string& fileName)
 
 	stream << "\n";
 
-	stream << "// Cities and connections - format\n// name\n//     target connection\n";
+	stream << "// Cities and connections - format\n// name colour\n//     target connection\n";
 	for (const auto& pair : cities)
 	{
-		stream << pair.first << "\n";
-		for (const auto& target : pair.second)
+		stream << pair.first << " " << pair.second.first << "\n";
+		for (const auto& target : pair.second.second)
 		{
 			stream << "\t" << target << "\n";
 		}
