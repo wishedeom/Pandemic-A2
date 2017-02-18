@@ -11,6 +11,7 @@ class CardCollection
 
 public:
 	CardCollection& add(CardPtr card);
+	CardPtr draw();
 
 private:
 	std::vector<CardPtr> _cards;
