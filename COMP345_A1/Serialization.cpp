@@ -1,14 +1,16 @@
 #include <fstream>
-#include <tuple>
+#include <memory>
 #include <string>
 #include <sstream>
 #include <stdexcept>
+#include <tuple>
 
-#include "MapSerialization.h"
+#include "Colour.h"
+#include "Serialization.h"
 
 bool fileExists(const std::string& fileName)
 {
-	return std::fstream{ fileName }.good();
+	return std::fstream { fileName }.good();
 }
 
 Map readMapFromFile(const std::string& fileName)
@@ -56,22 +58,22 @@ Map readMapFromFile(const std::string& fileName)
 	}
 	stream.close();
 
-	Map map;
-	map.name(fileName);
+	Map map(fileName);
 
 	// Add cities
 	for (const auto& pair : connections)
 	{
-		map.addCity(pair.first, colours[pair.first]);
+		map.addCity(std::make_unique<City>(pair.first));
 	}
 
 	// Add connections
 	for (const auto& pair : connections)
 	{
-		const auto& source = pair.first;
-		for (const auto& target : pair.second)
+		auto& source = map.city(pair.first);
+		for (const auto& targetName : pair.second)
 		{
-			map.addConnection(source, target);
+			auto& target = map.city(targetName);
+			source.connectTo(target);
 		}
 	}
 
@@ -96,8 +98,8 @@ void writeMapToFile(const Map& map, const std::string& fileName)
 	std::map<std::string, std::pair<std::string, std::vector<std::string>>> cities;
 	for (const auto& source : map.cities())
 	{
-		const auto& connections = map.connections(source->name());
-		cities[source->name()].first = source->colour();
+		const auto& connections = source->connections();
+		cities[source->name()].first = colourToString(source->colour());
 		for (const auto& target : connections)
 		{
 			cities[source->name()].second.push_back(target->name());

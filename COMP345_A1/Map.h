@@ -8,30 +8,29 @@
 #include "City.h"
 #include "Player.h"
 
+// Represents a game map. Contains players and cities
 class Map
 {
 	using CityPtr = std::unique_ptr<City>;
-	using CityPair = std::tuple<const City*, const City*>;
 	using PlayerPtr = std::unique_ptr<Player>;
 
 public:
+	// Constructs a map with a given file name
+	Map(const std::string& name);
+
 	// Accessors
-	std::string name() const;													// Map name
-	const City& city(const std::string& name) const;							// Reference to city by name
-	const std::vector<CityPtr>& cities() const;									// List of pointers to all contained cities
-	std::vector<City*> connections(const std::string& name) const;				// List of pointers to all cities connected to given city
-	bool connected(const std::string& source, const std::string& target) const;	// True iff the two cities are connected
-	const std::vector<PlayerPtr>& players() const;								// List of pointers to contained players
+	std::string name() const;						// Map file name
+	City& city(const std::string& name) const;		// Find a city by name
+	bool contains(const std::string& name) const;	// True iff map contains city of given name
+	const std::vector<CityPtr>& cities() const;		// List of pointers to all contained cities
+	const std::vector<PlayerPtr>& players() const;	// List of pointers to contained players
 
 	// Mutators
-	Map& name(const std::string& name);											// Set map name
-	Map& addCity(const std::string& name, const std::string& colour);			// Add city with given name and colour
-	Map& addConnection(const std::string& source, const std::string& target);	// Connect two cities with given names
-	Map& addPlayer(const std::string& name);									// Add a player with a given name
+	City& addCity(CityPtr city);					// Add city
+	Player& addPlayer(const std::string& name);		// Add a player with a given name
 
 private:
 	std::string _name;
 	std::vector<CityPtr> _cities;
-	std::map<CityPair, bool> _connections;
 	std::vector<PlayerPtr> _players;
 };

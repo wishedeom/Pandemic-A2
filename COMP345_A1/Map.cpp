@@ -6,68 +6,51 @@
 #include <map>
 #include <stdexcept>
 
+Map::Map(const std::string& name)
+	: _name{ name }
+{}
+
 std::string Map::name() const
 {
 	return _name;
 }
 
-Map& Map::name(const std::string & name)
+City& Map::addCity(CityPtr city)
 {
-	_name = name;
-	return *this;
+	_cities.push_back(std::move(city));
+	return *_cities.back().get();
 }
 
-Map& Map::addCity(const std::string& name, const std::string& colour)
-{
-	_cities.push_back(std::make_unique<City>(name, colour));
-	return *this;
-}
-
-Map& Map::addConnection(const std::string& source, const std::string& target)
-{
-	const City* city1 = &city(source);
-	const City* city2 = &city(target);
-	_connections[std::make_pair(city1, city2)] = true;
-	_connections[std::make_pair(city2, city1)] = true;
-	return *this;
-}
-
-Map& Map::addPlayer(const std::string& name)
+Player& Map::addPlayer(const std::string& name)
 {
 	_players.push_back(std::make_unique<Player>(name, *this));
-	return *this;
+	return *_players.back().get();
 }
 
-const City& Map::city(const std::string& name) const
+City& Map::city(const std::string& name) const
 {
-	const auto it = std::find_if(_cities.begin(), _cities.end(),
-		[&](const std::unique_ptr<City>& cityPtr) -> bool
-		{
-			return cityPtr->name() == name;
-		});
+	const auto it = std::find_if(_cities.begin(), _cities.end(), [&](const std::unique_ptr<City>& cityPtr) -> bool
+	{
+		return cityPtr->name() == name;
+	});
 	if (it == _cities.end())
-		throw std::out_of_range{ "No city of that name exits." };
+	{
+		throw std::out_of_range { "No city of that name exits." };
+	}
 	return *it->get();
+}
+
+bool Map::contains(const std::string& name) const
+{
+	return std::any_of(_cities.begin(), _cities.end(), [&](const std::unique_ptr<City>& cityPtr) -> bool
+	{
+		return cityPtr->name() == name;
+	});
 }
 
 const std::vector<Map::CityPtr>& Map::cities() const
 {
 	return _cities;
-}
-
-std::vector<City*> Map::connections(const std::string& name) const
-{
-	std::vector<City*> connVec;
-	for (const auto& city : _cities)
-		if (connected(name, city->name()))
-			connVec.push_back(city.get());
-	return connVec;
-}
-
-bool Map::connected(const std::string& source, const std::string& target) const
-{
-	auto it = _connections.find(std::make_pair(&city(source), &city(target)));
-	return it != _connections.end() && it->second;
 }
 
 const std::vector<Map::PlayerPtr>& Map::players() const

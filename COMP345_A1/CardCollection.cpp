@@ -12,3 +12,8 @@ std::unique_ptr<Card> CardCollection::draw()
 	_cards.pop_back();
 	return std::move(top);
 }
+
+const std::vector<std::unique_ptr<Card>>& CardCollection::cards() const
+{
+	return _cards;
+}
