@@ -1,15 +1,17 @@
 // Pandemic
 //
 // Authored by Michael Deom - 29549641
-// Submitted 21/02/2017
+// Submitted 17/03/2017
 //
-// Assignment 1 for the course COMP 345 - Advanced Program Design with C++
+// Assignment 2 for the course COMP 345 - Advanced Program Design with C++
 // with Prof. Nora Houari at Concordia University.
 //
 // An implementation of the board game "Pandemic" by Z-Man Games.
+// Added MapView observer.
+
 
 //  ----    Inclusions    ----
-// Standard library inclusions
+// Standard library inclusionsx
 #include <iostream>
 #include <fstream>
 #include <random>
@@ -20,11 +22,12 @@
 // Project file inclusions
 #include "Card.h"
 #include "City.h"
+#include "GameState.h"
 #include "Player.h"
 #include "Map.h"
 #include "Serialization.h"
 
-//  ----    Constant definitions    ----
+//  ----    Constant definitions    ----  //
 constexpr size_t numPlayers = 2;		// Number of players in the game.
 constexpr size_t startingHandSize = 5;	// Number of player cards each player receives.
 
@@ -35,7 +38,7 @@ static const std::vector<Card> roleCards	// Role cards in the game. To be expand
 };
 
 
-//  ----    Function forward declarations    ----
+//  ----    Function forward declarations    ---- //
 
 // Solicits a file name and returns the map stored in the text file
 Map loadMapFile();
@@ -69,18 +72,22 @@ void main()
 	std::cout << "    --------    P A N D E M I C    --------\n\n\n";
 
 	// Setup - Solicit map file name and load map, generate player cards from map, and print list of cities
-	auto map = loadMapFile();
+	GameState game;
+	game.setMap(std::make_unique<Map>(loadMapFile()));
+	auto& map = game.map();
+
 	auto playerCards = populatePlayerCards(map, numPlayers * startingHandSize);
 	listCities(map);
 
 	// Construct players
 	for (auto i = 1; i <= numPlayers; ++i)
 	{
-		auto& player = map.addPlayer(solicitPlayerName(i));		// Get names and construct players
-		distributeRoleCard(player, i);							// Attach role card
-		distributePlayerCards(player, playerCards);				// Give player cards
-		player.pawn().position(solicitCity(map));				// Solicit city name and place pawn
-		std::cout << "Your pawns are in " << player.pawn().position().name() << ".\n\n";
+		auto player = std::make_unique<Player>(solicitPlayerName(i), map);	// Get names and construct players
+		distributeRoleCard(*player, i);										// Attach role card
+		distributePlayerCards(*player, playerCards);						// Give player cards
+		player->pawn().position(solicitCity(map));							// Solicit city name and place pawn
+		std::cout << "Your pawn is in " << player->pawn().position().name() << ".\n\n";
+		game.addPlayer(std::move(player));
 	}
 
 	// Save game
