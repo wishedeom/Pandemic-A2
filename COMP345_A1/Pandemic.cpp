@@ -10,7 +10,7 @@
 // Added MapView observer.
 
 //  ----    Inclusions    ----
-// Standard library inclusionsx
+// Standard library inclusions
 #include <iostream>
 
 // Project file inclusions
