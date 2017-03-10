@@ -8,15 +8,11 @@ class Observer;
 class Observable
 {
 public:
-	virtual ~Observable();
+	virtual ~Observable() = 0;
 	void subscribe(Observer& observer);
-	void notifyAll() const;
-
-protected:
-	Observable();
+	void unsubscribe(Observer& observer);
+	void notify() const;
 
 private:
-	void notify(Observer& observer) const;
-
-	std::vector<std::reference_wrapper<Observer>> _observers;
+	std::vector<Observer*> _observers;
 };

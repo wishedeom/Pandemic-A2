@@ -5,10 +5,9 @@ class Observable;
 class Observer
 {
 public:
-	Observer(Observable& model);
-	virtual ~Observer();
+	virtual ~Observer() {};
 	virtual void update() = 0;
 
-private:
-	Observable& _model;
+protected:
+	Observer() {};
 };

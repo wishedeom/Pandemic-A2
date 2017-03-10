@@ -63,7 +63,8 @@ Map readMapFromFile(const std::string& fileName)
 	// Add cities
 	for (const auto& pair : connections)
 	{
-		map.addCity(std::make_unique<City>(pair.first));
+		const auto& name = pair.first;
+		map.addCity(std::make_unique<City>(name, stringToColour(colours[name])));
 	}
 
 	// Add connections

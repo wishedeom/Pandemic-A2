@@ -7,9 +7,11 @@
 
 #include "City.h"
 #include "Player.h"
+#include "Observable.h"
 
 // Represents a game map. Contains players and cities
 class Map
+	: public Observable
 {
 	using CityPtr = std::unique_ptr<City>;
 	using PlayerPtr = std::unique_ptr<Player>;

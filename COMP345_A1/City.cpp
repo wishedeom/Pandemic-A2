@@ -57,6 +57,10 @@ City& City::connectTo(City &target)
 	{
 		_connections.push_back(&target);
 	}
+	if (!target.isConnectedTo(*this))
+	{
+		target._connections.push_back(this);
+	}
 	return *this;
 }
 

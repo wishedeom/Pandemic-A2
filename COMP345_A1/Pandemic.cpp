@@ -25,6 +25,7 @@
 #include "GameState.h"
 #include "Player.h"
 #include "Map.h"
+#include "MapView.h"
 #include "Serialization.h"
 
 //  ----    Constant definitions    ----  //
@@ -73,44 +74,18 @@ void main()
 
 	// Setup - Solicit map file name and load map, generate player cards from map, and print list of cities
 	GameState game;
-	game.setMap(std::make_unique<Map>(loadMapFile()));
+	game.setMap(std::make_unique<Map>(readMapFromFile("earth.map")));
 	auto& map = game.map();
 
-	auto playerCards = populatePlayerCards(map, numPlayers * startingHandSize);
-	listCities(map);
+	// Construct MapView
+	MapView mapView { map };
 
-	// Construct players
-	for (auto i = 1; i <= numPlayers; ++i)
-	{
-		auto player = std::make_unique<Player>(solicitPlayerName(i), map);	// Get names and construct players
-		distributeRoleCard(*player, i);										// Attach role card
-		distributePlayerCards(*player, playerCards);						// Give player cards
-		player->pawn().position(solicitCity(map));							// Solicit city name and place pawn
-		std::cout << "Your pawn is in " << player->pawn().position().name() << ".\n\n";
-		game.addPlayer(std::move(player));
-	}
+	// Add a city to show off my fancy MapView
+	auto mke = std::make_unique<City>("Milwaukee", Colour::Yellow);
+	mke->connectTo(map.city("London"));
+	map.addCity(std::move(mke));
 
-	// Save game
-	std::string saveFileName;
-	while (true)
-	{
-		std::cout << "Where do you wish to save this game file? ";
-		std::getline(std::cin >> std::ws, saveFileName);
-		if (fileExists(saveFileName))
-		{
-			std::cout << "File already exists. Overwrite? (y/n): ";
-			std::string overwriteResponse;
-			std::getline(std::cin >> std::ws, overwriteResponse);
-			std::transform(overwriteResponse.begin(), overwriteResponse.end(), overwriteResponse.begin(), ::tolower);
-			if (overwriteResponse == "y")
-			{
-				break;
-			}
-		}
-	}
-	
-	writeMapToFile(map, saveFileName);
-	std::cout << "Game saved as " << saveFileName << "\nThanks for playing!" << std::endl;
+	std::cout << std::endl;
 }
 
 std::vector<Card> populatePlayerCards(const Map& map, const size_t number)

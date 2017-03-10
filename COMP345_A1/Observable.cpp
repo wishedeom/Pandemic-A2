@@ -1,24 +1,27 @@
+#include <algorithm>
+
 #include "Observable.h"
 #include "Observer.h"
-
-Observable::Observable() {}
 
 Observable::~Observable() {}
 
 void Observable::subscribe(Observer& observer)
 {
-	_observers.push_back(observer);
+	_observers.push_back(&observer);
 }
 
-void Observable::notifyAll() const
+void Observable::unsubscribe(Observer& observer)
+{
+	std::remove_if(_observers.begin(), _observers.end(), [&](const auto& o)
+	{
+		return o == &observer;
+	});
+}
+
+void Observable::notify() const
 {
 	for (auto& observer : _observers)
 	{
-		notify(observer);
+		observer->update();
 	}
-}
-
-void Observable::notify(Observer& observer) const
-{
-	observer.update();
 }

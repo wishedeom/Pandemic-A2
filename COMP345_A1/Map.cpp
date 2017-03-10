@@ -7,7 +7,7 @@
 #include <stdexcept>
 
 Map::Map(const std::string& name)
-	: _name{ name }
+	: _name { name }
 {}
 
 std::string Map::name() const
@@ -18,12 +18,14 @@ std::string Map::name() const
 City& Map::addCity(CityPtr city)
 {
 	_cities.push_back(std::move(city));
+	notify();
 	return *_cities.back().get();
 }
 
 Player& Map::addPlayer(const std::string& name)
 {
 	_players.push_back(std::make_unique<Player>(name, *this));
+	notify();
 	return *_players.back().get();
 }
 

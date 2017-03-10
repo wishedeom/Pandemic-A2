@@ -17,3 +17,6 @@ std::array<Colour, 4> colours();
 
 // Returns a string representation of a colour enum value
 std::string colourToString(const Colour& colour);
+
+// Inverse of colourToString
+Colour stringToColour(const std::string& name);

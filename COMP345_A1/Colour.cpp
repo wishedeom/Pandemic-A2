@@ -1,5 +1,6 @@
 #include <array>
 #include <map>
+#include <stdexcept>
 
 #include "Colour.h"
 
@@ -24,7 +25,19 @@ std::array<Colour, 4> colours()
 	return _colours;
 }
 
-std::string colourToString(const Colour & colour)
+std::string colourToString(const Colour& colour)
 {
 	return _colourStrings.at(colour);
+}
+
+Colour stringToColour(const std::string& name)
+{
+	for (const auto& c : _colourStrings)
+	{
+		if (c.second == name)
+		{
+			return c.first;
+		}
+	}
+	throw std::logic_error { "No matching colour." };
 }

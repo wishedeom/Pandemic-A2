@@ -148,7 +148,7 @@
     <ClCompile Include="City.cpp" />
     <ClCompile Include="Colour.cpp" />
     <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="MapView.cpp" />
     <ClCompile Include="Pandemic.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Serialization.cpp" />
@@ -163,6 +163,7 @@
     <ClInclude Include="Colour.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapView.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Serialization.h" />
     <ClInclude Include="Pawn.h" />
