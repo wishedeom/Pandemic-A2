@@ -22,13 +22,6 @@ City& Map::addCity(CityPtr city)
 	return *_cities.back().get();
 }
 
-Player& Map::addPlayer(const std::string& name)
-{
-	_players.push_back(std::make_unique<Player>(name, *this));
-	notify();
-	return *_players.back().get();
-}
-
 City& Map::city(const std::string& name) const
 {
 	const auto it = std::find_if(_cities.begin(), _cities.end(), [&](const std::unique_ptr<City>& cityPtr) -> bool
@@ -53,9 +46,4 @@ bool Map::contains(const std::string& name) const
 const std::vector<Map::CityPtr>& Map::cities() const
 {
 	return _cities;
-}
-
-const std::vector<Map::PlayerPtr>& Map::players() const
-{
-	return _players;
 }
