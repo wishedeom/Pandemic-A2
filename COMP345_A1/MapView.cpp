@@ -3,20 +3,22 @@
 
 #include "MapView.h"
 
-MapView::MapView(Map& map)
+MapView::MapView(Map* const map)
 	: _subject { map }
 {
-	map.subscribe(*this);
+	if (_subject)
+	{
+		_subject->subscribe(*this);
+	}
 }
 
-MapView::~MapView()
-{}
+MapView::~MapView() {}
 
 void MapView::update()
 {
 	// Prepare regions
 	std::map<Colour, std::vector<City*>> regions;
-	for (const auto& city : _subject.cities())
+	for (const auto& city : _subject->cities())
 	{
 		regions[city->colour()].push_back(city.get());
 	}
@@ -43,4 +45,9 @@ void MapView::update()
 		}
 	}
 	std::cout << ss.str();
+}
+
+Map* MapView::subject() const
+{
+	return _subject;
 }

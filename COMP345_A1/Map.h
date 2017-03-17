@@ -8,7 +8,7 @@
 #include "City.h"
 #include "Observable.h"
 
-// Represents a game map. Contains players and cities
+// Represents a game map - contains cities
 class Map
 	: public Observable
 {

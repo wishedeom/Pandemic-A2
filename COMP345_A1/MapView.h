@@ -8,14 +8,23 @@
 #include "Map.h"
 #include "Observer.h"
 
+// Prints a report to the console whenever an observed map changes
 class MapView
 	: public Observer
 {
 public:
-	MapView(Map& map);
+	// Constructs a MapView observing a given Map
+	MapView(Map* const map = nullptr);
+
+	// Dtor
 	~MapView() override;
+
+	// Report on the change of state
 	void update() override;
 
+	// The observed Map
+	Map* subject() const;
+
 private:
-	Map& _subject;
+	Map* _subject;
 };

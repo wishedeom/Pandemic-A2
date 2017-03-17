@@ -19,7 +19,7 @@
 
 Map readMapFromFile(const std::string& fileName);
 
-//	----    Program entry point    ----
+//	----    Program entry point    ----  //
 void main()
 {
 	// Title display
