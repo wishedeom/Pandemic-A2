@@ -29,7 +29,7 @@ void main()
 	auto map = readMapFromFile("earth.map");
 
 	// Construct MapView
-	MapView mapView { map };
+	MapView mapView { &map };
 
 	// Add a city to show off my fancy MapView
 	auto milwaukee = std::make_unique<City>("Milwaukee", Colour::Yellow);
